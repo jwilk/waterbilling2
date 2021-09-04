@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Copyright © 2021 Jakub Wilk <jwilk@jwilk.net>
+# SPDX-License-Identifier: MIT
+
+get_curl_config()
+{
+    printf 'header = "Authorization: Bearer %s"\n' "$DIGITALOCEAN_ACCESS_TOKEN"
+    if [ -n "$cacert" ]
+    then
+        printf 'capath = "/nonexistent"\n'
+        printf 'cacert = "%s"\n' "$cacert"
+    fi
+}
+
+xcurl()
+{
+    curl \
+        --silent --fail --show-error \
+        -K <(get_curl_config) \
+        -H 'User-Agent: waterbilling2 (https://github.com/jwilk/waterbilling2)' \
+    	"$@"
+}
+
+set -e -u
+: "$DIGITALOCEAN_ACCESS_TOKEN"
+cacert='/usr/share/ca-certificates/mozilla/Baltimore_CyberTrust_Root.crt'
+[ -f "$cacert" ] || cacert=
+endpoint='https://api.digitalocean.com/v2'
+json=$(xcurl "$endpoint/customers/my/balance")
+jq . <<< "$json"
+
+# vim:ts=4 sts=4 sw=4 et
