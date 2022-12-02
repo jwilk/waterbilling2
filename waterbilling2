@@ -28,6 +28,6 @@ cacert='/usr/share/ca-certificates/mozilla/Baltimore_CyberTrust_Root.crt'
 [ -f "$cacert" ] || cacert=
 endpoint='https://api.digitalocean.com/v2'
 json=$(xcurl "$endpoint/customers/my/balance")
-jq . <<< "$json"
+jq -r 'to_entries[] | [.key, .value] | @tsv' <<< "$json"
 
 # vim:ts=4 sts=4 sw=4 et
