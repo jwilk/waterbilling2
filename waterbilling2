@@ -19,7 +19,7 @@ xcurl()
         --silent --fail --show-error \
         -K <(get_curl_config) \
         -H 'User-Agent: waterbilling2 (https://github.com/jwilk/waterbilling2)' \
-    	"$@"
+        "$@"
 }
 
 set -e -u
