@@ -24,7 +24,7 @@ xcurl()
 
 set -e -u
 : "$DIGITALOCEAN_ACCESS_TOKEN"
-cacert='/usr/share/ca-certificates/mozilla/Baltimore_CyberTrust_Root.crt'
+cacert='/usr/share/ca-certificates/mozilla/ISRG_Root_X1.crt'
 [ -f "$cacert" ] || cacert=
 endpoint='https://api.digitalocean.com/v2'
 json=$(xcurl "$endpoint/customers/my/balance")
